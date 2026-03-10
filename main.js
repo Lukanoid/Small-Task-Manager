@@ -8,7 +8,7 @@ let input = "Gym";
 let showTasks = function(){
 
     for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].completion === "false"){
+        if(tasks[i].completion === false){
             console.log(`[] ${tasks[i]}`)
         }
         else{

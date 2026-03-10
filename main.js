@@ -20,8 +20,17 @@ let showTasks = function(){
 //deleteTask added functionallity for deleting tasks by id(working as expected)
 let deleteTask = function(id){
     const index = tasks.map(e => e.id).indexOf(id);
-    let compeltedTask = tasks.splice(index, 1)
-    console.log(`Task: ${compeltedTask[0].title} successfully removed.`)
+
+    try {
+        if(index === -1){
+            throw new Error("Task not found")
+        }
+        let compeltedTask = tasks.splice(index, 1)
+        console.log(`Task: ${compeltedTask[0].title} successfully removed.`)
+        
+    } catch (error) {
+        console.log(error.message)
+    }
 }
 
 
@@ -40,8 +49,16 @@ let addTask = function(title){
 //completeTask added functionality for completing task by id(working as expected)
 let completeTask = function(id){
     const index = tasks.map(e => e.id).indexOf(id);
-    tasks[index].completion = true;
-    console.log(`Task: ${tasks[index].title} successfully completed.`)
+    try {
+        if(index === -1){
+        throw new Error("Task not found")
+    }
+        tasks[index].completion = true;
+        console.log(`Task: ${tasks[index].title} successfully completed.`)
+    } catch (error) {
+        console.log(error.message)
+        
+    }
 }
 
 addTask("Gym")
@@ -49,5 +66,5 @@ addTask("Gambling")
 addTask("Homework")
 addTask("Sports")
 
-completeTask(3)
+deleteTask(10)
 

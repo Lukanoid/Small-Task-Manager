@@ -27,12 +27,11 @@ let deleteTask = function(id){
 
 //addTask Functionality (id generator aint working as i wanted)
 let addTask = function(title){
-    let currentTask = {
-        id: id,
+    const currentTask = {
+        id: id++,
         title: title,
         completion: false
     }
-    id++;
 
     tasks.push(currentTask)
     console.log(`Task: ${title} successfully added.`)

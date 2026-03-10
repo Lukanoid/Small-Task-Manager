@@ -1,5 +1,7 @@
 let tasks = [];
 let id = 1;
+let choice = 1;
+let input = "Gym";
 
 
 //showtasks Functionality(shows all tasks, worsk as expected)
@@ -68,3 +70,17 @@ addTask("Sports")
 
 deleteTask(10)
 
+
+
+//added simple menu simulation 
+if(choice === 1){
+    addTask(input)
+}
+else if(choice === 2){
+    showTasks()
+}
+else if(choice === 3){
+    completeTask()
+}else{
+    deleteTask()
+}

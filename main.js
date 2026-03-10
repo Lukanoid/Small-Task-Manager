@@ -21,7 +21,7 @@ let showTasks = function(){
 let deleteTask = function(id){
     const index = tasks.map(e => e.id).indexOf(id);
     let compeltedTask = tasks.splice(index, 1)
-    console.log(`Task: ${compeltedTask[0].title} successfully removed`)
+    console.log(`Task: ${compeltedTask[0].title} successfully removed.`)
 }
 
 
@@ -38,10 +38,11 @@ let addTask = function(title){
     console.log(`Task: ${title} successfully added.`)
 }
 
+//completeTask added functionality for completing task by id(working as expected)
 let completeTask = function(id){
     const index = tasks.map(e => e.id).indexOf(id);
     tasks[index].completion = true;
-    console.log(`Task: ${tasks[index].title} successfully completed`)
+    console.log(`Task: ${tasks[index].title} successfully completed.`)
 }
 
 addTask("Gym")

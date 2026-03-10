@@ -19,8 +19,8 @@ let showTasks = function(){
 
 //deleteTask added functionallity for deleting tasks by id(working as expected)
 let deleteTask = function(id){
-    const pos = tasks.map(e => e.id).indexOf(id);
-    let compeltedTask = tasks.splice(pos, 1)
+    const index = tasks.map(e => e.id).indexOf(id);
+    let compeltedTask = tasks.splice(index, 1)
     console.log(`Task: ${compeltedTask[0].title} successfully removed`)
 }
 
@@ -38,5 +38,16 @@ let addTask = function(title){
     console.log(`Task: ${title} successfully added.`)
 }
 
+let completeTask = function(id){
+    const index = tasks.map(e => e.id).indexOf(id);
+    tasks[index].completion = true;
+    console.log(`Task: ${tasks[index].title} successfully completed`)
+}
 
+addTask("Gym")
+addTask("Gambling")
+addTask("Homework")
+addTask("Sports")
+
+completeTask(3)
 

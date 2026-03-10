@@ -16,11 +16,14 @@ let showTasks = function(){
 
 }
 
-let completeTask = function(id){
+
+//deleteTask added functionallity for deleting tasks by id(working as expected)
+let deleteTask = function(id){
     const pos = tasks.map(e => e.id).indexOf(id);
     let compeltedTask = tasks.splice(pos, 1)
     console.log(`Task: ${compeltedTask[0].title} successfully removed`)
 }
+
 
 //addTask Functionality (id generator aint working as i wanted)
 let addTask = function(title){
@@ -35,11 +38,5 @@ let addTask = function(title){
     console.log(`Task: ${title} successfully added.`)
 }
 
-addTask("Gym")
-addTask("Study")
-addTask("Homeword")
-addTask("Gaming")
-addTask("Betting")
 
-completeTask(4)
 

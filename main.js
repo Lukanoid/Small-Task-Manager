@@ -7,6 +7,10 @@ let input = "Gym";
 //showtasks Functionality(shows all tasks, worsk as expected)
 let showTasks = function(){
 
+    if(tasks.length === 0){
+        console.log("No tasks to show.")
+        return;
+    }
     for(let i = 0; i < tasks.length; i++){
         if(tasks[i].completion === false){
             console.log(`[] ${tasks[i]}`)

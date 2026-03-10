@@ -1,6 +1,8 @@
 let tasks = [];
 let id = 1;
 
+
+//showtasks Functionality(shows all tasks, worsk as expected)
 let showTasks = function(){
 
     for(let i = 0; i < tasks.length; i++){
@@ -12,6 +14,12 @@ let showTasks = function(){
         }
     }
 
+}
+
+let completeTask = function(id){
+    const pos = tasks.map(e => e.id).indexOf(id);
+    let compeltedTask = tasks.splice(pos, 1)
+    console.log(`Task: ${compeltedTask[0].title} successfully removed`)
 }
 
 //addTask Functionality (id generator aint working as i wanted)
@@ -29,6 +37,9 @@ let addTask = function(title){
 
 addTask("Gym")
 addTask("Study")
+addTask("Homeword")
+addTask("Gaming")
+addTask("Betting")
 
-showTasks()
+completeTask(4)
 

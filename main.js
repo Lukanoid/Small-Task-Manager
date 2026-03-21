@@ -13,7 +13,7 @@ let showTasks = function(){
     }
     for(let i = 0; i < tasks.length; i++){
         if(tasks[i].completion === false){
-            console.log(`[] ${tasks[i]}`)
+            console.log(`[] ${tasks[i].title}`)
         }
         else{
             console.log(`[x] ${tasks[i].title}`)
@@ -31,8 +31,8 @@ let deleteTask = function(id){
         if(index === -1){
             throw new Error("Task not found")
         }
-        let compeltedTask = tasks.splice(index, 1)
-        console.log(`Task: ${compeltedTask[0].title} successfully removed.`)
+        let completedTask = tasks.splice(index, 1)
+        console.log(`Task: ${completedTask[0].title} successfully removed.`)
         
     } catch (error) {
         console.log(error.message)
@@ -84,9 +84,7 @@ else if(choice === 2){
     showTasks()
 }
 else if(choice === 3){
-    completeTask()
+    completeTask(1)
 }else{
-    deleteTask()
+    deleteTask(1)
 }
-
-let a = 10;

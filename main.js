@@ -88,3 +88,5 @@ else if(choice === 3){
 }else{
     deleteTask()
 }
+
+let a = 10;

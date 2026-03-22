@@ -86,7 +86,7 @@ let editTask = function(id, newTitle){
             throw new Error("Task title is invalid")
         }
         let oldTitle = tasks[index].title;
-        tasks[index].title = newTitle
+        tasks[index].title = newTitle.trim();
 
         console.log(`Task: ${oldTitle} successfully changed to ${newTitle}.`)
 

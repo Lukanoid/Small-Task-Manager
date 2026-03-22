@@ -11,10 +11,10 @@ let showTasks = function(){
     }
     for(let i = 0; i < tasks.length; i++){
         if(tasks[i].completion === false){
-            console.log(`[] ${tasks[i].title}`)
+            console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
         }
         else{
-            console.log(`[x] ${tasks[i].title}`)
+            console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
         }
     }
 
@@ -76,9 +76,8 @@ let completeTask = function(id){
 }
 
 
-addTask("");
-addTask("   ");
-addTask();
-completeTask(0);
-deleteTask(-1);
-deleteTask("abc");
+addTask("Gym")
+addTask("Sports")
+addTask("Cars")
+
+showTasks()

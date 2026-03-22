@@ -85,8 +85,10 @@ let editTask = function(id, newTitle){
         if(!newTitle || newTitle.trim() === ""){
             throw new Error("Task title is invalid")
         }
-        
+        let oldTitle = tasks[index].title;
         tasks[index].title = newTitle
+
+        console.log(`Task: ${oldTitle} successfully changed to ${newTitle}.`)
 
     } catch (error) {
         console.log(error.message)
@@ -101,6 +103,6 @@ addTask("Cars")
 
 showTasks()
 
-editTask(1, "")
+editTask(1, "NoGym")
 
 showTasks()

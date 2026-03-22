@@ -42,8 +42,8 @@ let deleteTask = function(id){
 let addTask = function(title){
 
     try {
-        if(title === "" || title.trim() === ""){
-        throw new Error("no title added")
+        if(title.trim() === ""){
+        throw new Error("No Title Added")
     }
 
     const currentTask = {

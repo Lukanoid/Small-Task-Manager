@@ -118,6 +118,29 @@ let showCompletedTasks = function(){
     }
 }
 
+let showPendingTasks = function(){
+    let pendingTasks = 0;
+    try {
+        if(tasks.length === 0){
+        throw new Error("No tasks to show.")
+    }
+
+    for(let i = 0; i < tasks.length; i++){
+        if(tasks[i].completion === false){
+            pendingTasks += 1;
+            console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
+        }
+    }
+
+    if(pendingTasks === 0){
+        console.log("No pending tasks found.")
+    }
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 
 addTask("Gym")
 addTask("Sports")
@@ -126,4 +149,6 @@ addTask("Cars")
 showTasks()
 
 completeTask(1);
-showTasks()
+completeTask(2);
+completeTask(3);
+showPendingTasks()

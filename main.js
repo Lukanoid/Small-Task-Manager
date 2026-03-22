@@ -92,7 +92,29 @@ let editTask = function(id, newTitle){
 
     } catch (error) {
         console.log(error.message)
-        
+    }
+}
+
+let showCompletedTasks = function(){
+    let completedTasks = 0;
+    try {
+        if(tasks.length === 0){
+        throw new Error("No tasks to show.")
+    }
+
+    for(let i = 0; i < tasks.length; i++){
+        if(tasks[i].completion === true){
+            completedTasks += 1;
+            console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
+        }
+    }
+
+    if(completedTasks === 0){
+        console.log("No completed tasks to show.")
+    }
+
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -103,6 +125,5 @@ addTask("Cars")
 
 showTasks()
 
-editTask(1, "NoGym")
-
+completeTask(1);
 showTasks()

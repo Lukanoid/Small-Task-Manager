@@ -78,6 +78,7 @@ let completeTask = function(id){
 
 addTask("");
 addTask("   ");
+addTask();
 completeTask(0);
 deleteTask(-1);
 deleteTask("abc");

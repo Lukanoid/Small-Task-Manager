@@ -1,7 +1,5 @@
 let tasks = [];
 let id = 1;
-let choice = 1;
-let input = "Gym";
 
 
 //showtasks Functionality(shows all tasks, worsk as expected)
@@ -40,16 +38,26 @@ let deleteTask = function(id){
 }
 
 
-//addTask Functionality (id generator aint working as i wanted)
+//addTask Functionality 
 let addTask = function(title){
+
+    try {
+        if(title === "" || title.trim() === ""){
+        throw new Error("no title added")
+    }
+
     const currentTask = {
         id: id++,
         title: title,
         completion: false
     }
-
+    
     tasks.push(currentTask)
     console.log(`Task: ${title} successfully added.`)
+    } catch (error) {
+        console.log(error.message)
+        
+    }
 }
 
 //completeTask added functionality for completing task by id(working as expected)
@@ -67,24 +75,9 @@ let completeTask = function(id){
     }
 }
 
-addTask("Gym")
-addTask("Gambling")
-addTask("Homework")
-addTask("Sports")
 
-deleteTask(10)
-
-
-
-//added simple menu simulation 
-if(choice === 1){
-    addTask(input)
-}
-else if(choice === 2){
-    showTasks()
-}
-else if(choice === 3){
-    completeTask(1)
-}else{
-    deleteTask(1)
-}
+addTask("");
+addTask("   ");
+completeTask(0);
+deleteTask(-1);
+deleteTask("abc");

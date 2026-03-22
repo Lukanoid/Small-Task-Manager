@@ -75,9 +75,32 @@ let completeTask = function(id){
     }
 }
 
+let editTask = function(id, newTitle){
+    const index = tasks.map(e => e.id).indexOf(id);
+
+    try {
+        if(index === -1){
+        throw new Error("Task not found")
+    }
+        if(!newTitle || newTitle.trim() === ""){
+            throw new Error("Task title is invalid")
+        }
+        
+        tasks[index].title = newTitle
+
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
 
 addTask("Gym")
 addTask("Sports")
 addTask("Cars")
+
+showTasks()
+
+editTask(1, "")
 
 showTasks()

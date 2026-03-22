@@ -2,7 +2,12 @@ let tasks = [];
 let id = 1;
 
 
-//showtasks Functionality(shows all tasks, worsk as expected)
+/**
+ * Showing all tasks
+ *
+ * 
+ * @returns {void}
+ */
 let showTasks = function(){
 
     if(tasks.length === 0){
@@ -21,7 +26,12 @@ let showTasks = function(){
 }
 
 
-//deleteTask added functionallity for deleting tasks by id(working as expected)
+/**
+ * Deleting existing task
+ *
+ * @param {number} id the id of task to delete
+ * @returns {void}
+ */
 let deleteTask = function(id){
     const index = tasks.map(e => e.id).indexOf(id);
 
@@ -38,7 +48,12 @@ let deleteTask = function(id){
 }
 
 
-//addTask Functionality 
+/**
+ * Creating new task
+ *
+ * @param {string} title the name of task to be created
+ * @returns {void} 
+ */
 let addTask = function(title){
 
     try {
@@ -60,7 +75,12 @@ let addTask = function(title){
     }
 }
 
-//completeTask added functionality for completing task by id(working as expected)
+/**
+ * Marking a task as completed
+ *
+ * @param {number} id the id of the task to be marked as completed
+ * @returns {void}
+ */
 let completeTask = function(id){
     const index = tasks.map(e => e.id).indexOf(id);
     try {
@@ -75,6 +95,13 @@ let completeTask = function(id){
     }
 }
 
+/**
+ * Changing the name of an existing task
+ *
+ * @param {number} id the id of the task to be changed
+ * @param {string} newTitle new name of the task
+ * @returns {void} 
+ */
 let editTask = function(id, newTitle){
     const index = tasks.map(e => e.id).indexOf(id);
 
@@ -88,13 +115,18 @@ let editTask = function(id, newTitle){
         let oldTitle = tasks[index].title;
         tasks[index].title = newTitle.trim();
 
-        console.log(`Task: ${oldTitle} successfully changed to ${newTitle}.`)
+        console.log(`Task: ${oldTitle} successfully changed to ${tasks[index.title]}.`)
 
     } catch (error) {
         console.log(error.message)
     }
 }
 
+/**
+ * Showing all completed tasks
+ *
+ * @returns {void}
+ */
 let showCompletedTasks = function(){
     let completedTasks = 0;
     try {
@@ -118,6 +150,11 @@ let showCompletedTasks = function(){
     }
 }
 
+/**
+ * Showing all pending tasks(uncompleted)
+ *
+ * @returns {void} 
+ */
 let showPendingTasks = function(){
     let pendingTasks = 0;
     try {

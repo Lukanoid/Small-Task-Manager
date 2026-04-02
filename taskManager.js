@@ -1,3 +1,5 @@
+const { loadTasks, saveTasks } = require("./storage");
+
 let tasks = [];
 let id = 1;
 

@@ -49,6 +49,7 @@ let deleteTask = function(id){
             throw new Error("Task not found")
         }
         let completedTask = tasks.splice(index, 1)
+        saveTasks(tasks);
         console.log(`Task: ${completedTask[0].title} successfully removed.`)
         
     } catch (error) {
@@ -77,6 +78,7 @@ let addTask = function(title){
     }
     
     tasks.push(currentTask)
+    saveTasks(tasks)
     console.log(`Task: ${title} successfully added.`)
     } catch (error) {
         console.log(error.message)
@@ -97,6 +99,7 @@ let completeTask = function(id){
         throw new Error("Task not found")
     }
         tasks[index].completed = true;
+        saveTasks(tasks);
         console.log(`Task: ${tasks[index].title} successfully completed.`)
     } catch (error) {
         console.log(error.message)
@@ -123,6 +126,7 @@ let editTask = function(id, newTitle){
         }
         let oldTitle = tasks[index].title;
         tasks[index].title = newTitle.trim();
+        saveTasks(tasks);
 
         console.log(`Task: ${oldTitle} successfully changed to ${tasks[index].title}.`)
 

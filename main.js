@@ -6,7 +6,8 @@ const {
     showTasks,
     showCompletedTasks,
     showPendingTasks,
-    clearAllTasks
+    clearAllTasks,
+    uncompleteTask
 } = require("./taskManager");
 
 const command = process.argv[2];
@@ -37,6 +38,9 @@ else if (command === "clear") {
 else if (command === "pending") {
     showPendingTasks();
 } 
+else if (command === "uncomplete") {
+    uncompleteTask(Number(arg1));
+} 
 else {
     console.log("Unknown command.");
     console.log(`
@@ -49,5 +53,6 @@ else {
   node main.js completed - for seeing all completed tasks.
   node main.js pending - for seeing all uncompleted tasks.
   node main.js clear - for clearing all tasks.
+  node main.js uncomplete 1 - for marking task as pending.
 `);
 }

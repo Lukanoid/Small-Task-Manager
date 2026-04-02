@@ -16,7 +16,7 @@ let getTaskIndexById = function (id) {
  * 
  * @returns {void}
  */
-let clearAllTasks = function(){
+let clearAllTasks = function () {
     let tasks = [];
     saveTasks(tasks);
     console.log("All tasks cleared.")
@@ -29,17 +29,17 @@ let clearAllTasks = function(){
  * 
  * @returns {void}
  */
-let showTasks = function(){
+let showTasks = function () {
 
-    if(tasks.length === 0){
+    if (tasks.length === 0) {
         console.log("No tasks to show.")
         return;
     }
-    for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].completed === false){
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].completed === false) {
             console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
         }
-        else{
+        else {
             console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
         }
     }
@@ -53,17 +53,17 @@ let showTasks = function(){
  * @param {number} id the id of task to delete
  * @returns {void}
  */
-let deleteTask = function(id){
+let deleteTask = function (id) {
     const index = getTaskIndexById(id)
 
     try {
-        if(index === -1){
+        if (index === -1) {
             throw new Error("Task not found")
         }
         let completedTask = tasks.splice(index, 1)
         saveTasks(tasks);
         console.log(`Task: ${completedTask[0].title} successfully removed.`)
-        
+
     } catch (error) {
         console.log(error.message)
     }
@@ -76,47 +76,70 @@ let deleteTask = function(id){
  * @param {string} title the name of task to be created
  * @returns {void} 
  */
-let addTask = function(title){
+let addTask = function (title) {
 
     try {
-        if(!title || title.trim() === ""){
-        throw new Error("No Title Added")
-    }
+        if (!title || title.trim() === "") {
+            throw new Error("No Title Added")
+        }
 
-    const currentTask = {
-        id: id++,
-        title: title,
-        completed: false
-    }
-    
-    tasks.push(currentTask)
-    saveTasks(tasks)
-    console.log(`Task: ${title} successfully added.`)
+        const currentTask = {
+            id: id++,
+            title: title,
+            completed: false
+        }
+
+        tasks.push(currentTask)
+        saveTasks(tasks)
+        console.log(`Task: ${title} successfully added.`)
     } catch (error) {
         console.log(error.message)
-        
+
     }
 }
 
 /**
- * Marking a task as completed
+ * Marking a task as completed.
  *
  * @param {number} id the id of the task to be marked as completed
  * @returns {void}
  */
-let completeTask = function(id){
+let completeTask = function (id) {
     const index = getTaskIndexById(id)
     try {
-        if(index === -1){
-        throw new Error("Task not found")
-    }
+        if (index === -1) {
+            throw new Error("Task not found")
+        }
         tasks[index].completed = true;
         saveTasks(tasks);
         console.log(`Task: ${tasks[index].title} successfully completed.`)
     } catch (error) {
         console.log(error.message)
-        
+
     }
+}
+
+/**
+ * Marking a task as pending.
+ *
+ * @param {number} id the id of the task to be marked as pending
+ * @returns {void}
+ */
+let uncompleteTask = function (id) {
+    const index = getTaskIndexById(id)
+
+    try {
+        if (index === -1) {
+            throw new Error("Task not found")
+        }
+        tasks[index].completed = false;
+        saveTasks(tasks);
+        console.log(`Task: ${tasks[index].title} marked as pending.`)
+    } catch (error) {
+        console.log(error.message)
+
+    }
+
 }
 
 /**
@@ -126,14 +149,14 @@ let completeTask = function(id){
  * @param {string} newTitle new name of the task
  * @returns {void} 
  */
-let editTask = function(id, newTitle){
+let editTask = function (id, newTitle) {
     const index = getTaskIndexById(id)
 
     try {
-        if(index === -1){
-        throw new Error("Task not found")
-    }
-        if(!newTitle || newTitle.trim() === ""){
+        if (index === -1) {
+            throw new Error("Task not found")
+        }
+        if (!newTitle || newTitle.trim() === "") {
             throw new Error("Task title is invalid")
         }
         let oldTitle = tasks[index].title;
@@ -152,23 +175,23 @@ let editTask = function(id, newTitle){
  *
  * @returns {void}
  */
-let showCompletedTasks = function(){
+let showCompletedTasks = function () {
     let completedTasks = 0;
     try {
-        if(tasks.length === 0){
-        throw new Error("No tasks to show.")
-    }
-
-    for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].completed === true){
-            completedTasks += 1;
-            console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
+        if (tasks.length === 0) {
+            throw new Error("No tasks to show.")
         }
-    }
 
-    if(completedTasks === 0){
-        console.log("No completed tasks to show.")
-    }
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].completed === true) {
+                completedTasks += 1;
+                console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
+            }
+        }
+
+        if (completedTasks === 0) {
+            console.log("No completed tasks to show.")
+        }
 
     } catch (error) {
         console.log(error.message)
@@ -180,23 +203,23 @@ let showCompletedTasks = function(){
  *
  * @returns {void} 
  */
-let showPendingTasks = function(){
+let showPendingTasks = function () {
     let pendingTasks = 0;
     try {
-        if(tasks.length === 0){
-        throw new Error("No tasks to show.")
-    }
-
-    for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].completed === false){
-            pendingTasks += 1;
-            console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
+        if (tasks.length === 0) {
+            throw new Error("No tasks to show.")
         }
-    }
 
-    if(pendingTasks === 0){
-        console.log("No pending tasks found.")
-    }
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].completed === false) {
+                pendingTasks += 1;
+                console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
+            }
+        }
+
+        if (pendingTasks === 0) {
+            console.log("No pending tasks found.")
+        }
 
     } catch (error) {
         console.log(error.message)
@@ -204,12 +227,13 @@ let showPendingTasks = function(){
 }
 
 module.exports = {
-  addTask,
-  deleteTask,
-  editTask,
-  completeTask,
-  showTasks,
-  showCompletedTasks,
-  showPendingTasks,
-  clearAllTasks
+    addTask,
+    deleteTask,
+    editTask,
+    completeTask,
+    showTasks,
+    showCompletedTasks,
+    showPendingTasks,
+    clearAllTasks,
+    uncompleteTask
 };

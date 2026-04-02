@@ -1,7 +1,9 @@
 const { loadTasks, saveTasks } = require("./storage");
 
-let tasks = [];
-let id = 1;
+let tasks = loadTasks();
+let id = tasks.length > 0
+    ? Math.max(...tasks.map(task => task.id)) + 1
+    : 1;
 
 
 let getTaskIndexById = function (id) {

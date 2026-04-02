@@ -171,8 +171,23 @@ let editTask = function (id, newTitle) {
     }
 }
 
+/**
+ * Clearing all completed tasks
+ *
+ * @returns {void}
+ */
 let clearCompleted = function(){
-    
+    const before = tasks.length;
+    tasks = tasks.filter(task => task.completed === false)
+    saveTasks(tasks);
+
+
+    if(tasks.length === before){
+        console.log("No completed tasks to clear.")
+    }
+    else{
+        console.log("Completed tasks cleared")
+    }
 }
 
 /**
@@ -240,5 +255,6 @@ module.exports = {
     showCompletedTasks,
     showPendingTasks,
     clearAllTasks,
-    uncompleteTask
+    uncompleteTask,
+    clearCompleted
 };

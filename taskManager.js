@@ -86,7 +86,8 @@ let addTask = function (title) {
         const currentTask = {
             id: id++,
             title: title,
-            completed: false
+            completed: false,
+            createdAt: new Date().toISOString()
         }
 
         tasks.push(currentTask)
@@ -168,6 +169,10 @@ let editTask = function (id, newTitle) {
     } catch (error) {
         console.log(error.message)
     }
+}
+
+let clearCompleted = function(){
+    
 }
 
 /**

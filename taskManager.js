@@ -2,6 +2,11 @@ let tasks = [];
 let id = 1;
 
 
+let getTaskIndexById = function (id) {
+    return tasks.findIndex(task => task.id === id);
+};
+
+
 /**
  * Showing all tasks
  *
@@ -33,7 +38,7 @@ let showTasks = function(){
  * @returns {void}
  */
 let deleteTask = function(id){
-    const index = tasks.map(e => e.id).indexOf(id);
+    const index = getTaskIndexById(id)
 
     try {
         if(index === -1){
@@ -82,7 +87,7 @@ let addTask = function(title){
  * @returns {void}
  */
 let completeTask = function(id){
-    const index = tasks.map(e => e.id).indexOf(id);
+    const index = getTaskIndexById(id)
     try {
         if(index === -1){
         throw new Error("Task not found")
@@ -103,7 +108,7 @@ let completeTask = function(id){
  * @returns {void} 
  */
 let editTask = function(id, newTitle){
-    const index = tasks.map(e => e.id).indexOf(id);
+    const index = getTaskIndexById(id)
 
     try {
         if(index === -1){

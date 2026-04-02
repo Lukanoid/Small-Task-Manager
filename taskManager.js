@@ -10,6 +10,12 @@ let getTaskIndexById = function (id) {
     return tasks.findIndex(task => task.id === id);
 };
 
+let clearAllTasks = function(){
+    let tasks = [];
+    saveTasks(tasks);
+    console.log("All tasks cleared.")
+}
+
 
 /**
  * Showing all tasks
@@ -198,5 +204,6 @@ module.exports = {
   completeTask,
   showTasks,
   showCompletedTasks,
-  showPendingTasks
+  showPendingTasks,
+  clearAllTasks
 };

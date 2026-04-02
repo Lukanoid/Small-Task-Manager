@@ -24,7 +24,7 @@ let showTasks = function(){
         return;
     }
     for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].completion === false){
+        if(tasks[i].completed === false){
             console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
         }
         else{
@@ -73,7 +73,7 @@ let addTask = function(title){
     const currentTask = {
         id: id++,
         title: title,
-        completion: false
+        completed: false
     }
     
     tasks.push(currentTask)
@@ -96,7 +96,7 @@ let completeTask = function(id){
         if(index === -1){
         throw new Error("Task not found")
     }
-        tasks[index].completion = true;
+        tasks[index].completed = true;
         console.log(`Task: ${tasks[index].title} successfully completed.`)
     } catch (error) {
         console.log(error.message)
@@ -144,7 +144,7 @@ let showCompletedTasks = function(){
     }
 
     for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].completion === true){
+        if(tasks[i].completed === true){
             completedTasks += 1;
             console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
         }
@@ -172,7 +172,7 @@ let showPendingTasks = function(){
     }
 
     for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].completion === false){
+        if(tasks[i].completed === false){
             pendingTasks += 1;
             console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
         }

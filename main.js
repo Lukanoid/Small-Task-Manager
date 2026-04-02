@@ -115,7 +115,7 @@ let editTask = function(id, newTitle){
         let oldTitle = tasks[index].title;
         tasks[index].title = newTitle.trim();
 
-        console.log(`Task: ${oldTitle} successfully changed to ${tasks[index.title]}.`)
+        console.log(`Task: ${oldTitle} successfully changed to ${tasks[index].title}.`)
 
     } catch (error) {
         console.log(error.message)

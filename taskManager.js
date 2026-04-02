@@ -10,6 +10,12 @@ let getTaskIndexById = function (id) {
     return tasks.findIndex(task => task.id === id);
 };
 
+/**
+ * Clearing all tasks
+ *
+ * 
+ * @returns {void}
+ */
 let clearAllTasks = function(){
     let tasks = [];
     saveTasks(tasks);

@@ -58,7 +58,7 @@ node main.js pending
 node main.js edit 2 "Study Node.js"
 node main.js clear-completed
 
-##How It Works
+## How It Works
 
 - main.js handles terminal commands
 - taskManager.js contains the main task logic

@@ -87,7 +87,6 @@ let addTask = function (title) {
             id: id++,
             title: title,
             completed: false,
-            createdAt: new Date().toISOString()
         }
 
         tasks.push(currentTask)

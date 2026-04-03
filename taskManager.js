@@ -24,7 +24,8 @@ let getDate = function(task){
  * @returns {void}
  */
 let clearAllTasks = function () {
-    let tasks = [];
+    tasks = [];
+    id = 1;
     saveTasks(tasks);
     console.log("All tasks cleared.")
 }

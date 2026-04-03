@@ -10,6 +10,13 @@ let getTaskIndexById = function (id) {
     return tasks.findIndex(task => task.id === id);
 };
 
+let getDate = function(task){
+    if (!task.createdAt) {
+        return "Unknown";
+    }
+    return new Date(task.createdAt).toLocaleDateString();
+}
+
 /**
  * Clearing all tasks
  *
@@ -37,10 +44,12 @@ let showTasks = function () {
     }
     for (let i = 0; i < tasks.length; i++) {
         if (tasks[i].completed === false) {
-            console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
+            const currentDate = getDate(tasks[i]);
+            console.log(`[] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
         }
         else {
-            console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
+            const currentDate = getDate(tasks[i]);
+            console.log(`[x] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
         }
     }
 
@@ -87,6 +96,7 @@ let addTask = function (title) {
             id: id++,
             title: title,
             completed: false,
+            createdAt: new Date().toISOString()
         }
 
         tasks.push(currentTask)
@@ -204,7 +214,8 @@ let showCompletedTasks = function () {
         for (let i = 0; i < tasks.length; i++) {
             if (tasks[i].completed === true) {
                 completedTasks += 1;
-                console.log(`[x] ${tasks[i].id} - ${tasks[i].title}`)
+                const currentDate = getDate(tasks[i]) 
+                console.log(`[x] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
             }
         }
 
@@ -232,7 +243,8 @@ let showPendingTasks = function () {
         for (let i = 0; i < tasks.length; i++) {
             if (tasks[i].completed === false) {
                 pendingTasks += 1;
-                console.log(`[] ${tasks[i].id} - ${tasks[i].title}`)
+                const currentDate = getDate(tasks[i])
+                console.log(`[] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
             }
         }
 

@@ -1,0 +1,27 @@
+{
+  "name": "small-task-manager",
+  "version": "1.0.0",
+  "description": "A simple command-line task manager built with JavaScript and Node.js.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lukanoid/Small-Task-Manager.git"
+  },
+  "keywords": [
+    "task-manager",
+    "cli",
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Vasil Stamboliiski",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Lukanoid/Small-Task-Manager/issues"
+  },
+  "homepage": "https://github.com/Lukanoid/Small-Task-Manager#readme"
+}

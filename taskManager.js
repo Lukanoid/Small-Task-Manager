@@ -10,7 +10,7 @@ let getTaskIndexById = function (id) {
     return tasks.findIndex(task => task.id === id);
 };
 
-let getDate = function(task){
+let getDate = function (task) {
     if (!task.createdAt) {
         return "Unknown";
     }
@@ -87,22 +87,24 @@ let deleteTask = function (id) {
  * @returns {void} 
  */
 let addTask = function (title) {
-
     try {
         if (!title || title.trim() === "") {
             throw new Error("No Title Added")
         }
+        if (tasks.some(task => task.title.toLowerCase() === title.trim().toLowerCase())) {
+            throw new Error("Task already exists.")
+        }
 
         const currentTask = {
             id: id++,
-            title: title,
+            title: title.trim(),
             completed: false,
             createdAt: new Date().toISOString()
         }
 
         tasks.push(currentTask)
         saveTasks(tasks)
-        console.log(`Task: ${title} successfully added.`)
+        console.log(`Task: ${currentTask.title} successfully added.`)
     } catch (error) {
         console.log(error.message)
 
@@ -186,16 +188,16 @@ let editTask = function (id, newTitle) {
  *
  * @returns {void}
  */
-let clearCompleted = function(){
+let clearCompleted = function () {
     const before = tasks.length;
     tasks = tasks.filter(task => task.completed === false)
     saveTasks(tasks);
 
 
-    if(tasks.length === before){
+    if (tasks.length === before) {
         console.log("No completed tasks to clear.")
     }
-    else{
+    else {
         console.log("Completed tasks cleared")
     }
 }
@@ -215,7 +217,7 @@ let showCompletedTasks = function () {
         for (let i = 0; i < tasks.length; i++) {
             if (tasks[i].completed === true) {
                 completedTasks += 1;
-                const currentDate = getDate(tasks[i]) 
+                const currentDate = getDate(tasks[i])
                 console.log(`[x] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
             }
         }

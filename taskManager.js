@@ -46,11 +46,11 @@ let showTasks = function () {
     for (let i = 0; i < tasks.length; i++) {
         if (tasks[i].completed === false) {
             const currentDate = getDate(tasks[i]);
-            console.log(`[] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
+            console.log(`[] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
         }
         else {
             const currentDate = getDate(tasks[i]);
-            console.log(`[x] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
+            console.log(`[x] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
         }
     }
 
@@ -99,7 +99,8 @@ let addTask = function (title) {
             id: id++,
             title: title.trim(),
             completed: false,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            priority: "medium"
         }
 
         tasks.push(currentTask)
@@ -218,7 +219,7 @@ let showCompletedTasks = function () {
             if (tasks[i].completed === true) {
                 completedTasks += 1;
                 const currentDate = getDate(tasks[i])
-                console.log(`[x] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
+                console.log(`[x] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
             }
         }
 
@@ -247,7 +248,7 @@ let showPendingTasks = function () {
             if (tasks[i].completed === false) {
                 pendingTasks += 1;
                 const currentDate = getDate(tasks[i])
-                console.log(`[] ${tasks[i].id} - ${tasks[i].title} | Created: ${currentDate}`)
+                console.log(`[] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
             }
         }
 
@@ -282,16 +283,47 @@ let search = function (keyword) {
             for (let i = 0; i < filtered.length; i++) {
                 if (filtered[i].completed === false) {
                     let currentDate = getDate(filtered[i])
-                    console.log(`[] ${filtered[i].id} - ${filtered[i].title} | Created: ${currentDate}`)
+                    console.log(`[] ${filtered[i].id} - ${filtered[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
                 }
                 else {
                     let currentDate = getDate(filtered[i])
-                    console.log(`[x] ${filtered[i].id} - ${filtered[i].title} | Created: ${currentDate}`)
+                    console.log(`[x] ${filtered[i].id} - ${filtered[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
                 }
             }
 
             console.log(`Found ${filtered.length} match for ${trimmed}`)
         }
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+/**
+ * Changing the priority of a certain task
+ *
+ * @param {number} id the id of the task to change its priority
+ * @param {string} word the priority to change to
+ * @returns {void} 
+ */
+let changePriority = function (id, word) {
+    const index = getTaskIndexById(id)
+
+    try {
+        if (index === -1) {
+            throw new Error("Task not found")
+        }
+        if (!word || word.trim() === "") {
+            throw new Error("Please provide a valid priority.")
+        }
+        let priority = word.toLowerCase().trim();
+        if (priority !== "high" && priority !== "low" && priority !== "medium") {
+            throw new Error(`Priority can't be changed to ${priority}`)
+        }
+        let oldPriority = tasks[index].priority;
+        tasks[index].priority = priority;
+        saveTasks(tasks);
+        console.log(`Task: ${tasks[index].title}'s priority successfully changed from ${oldPriority} to ${priority}.`)
 
     } catch (error) {
         console.log(error.message)
@@ -309,5 +341,6 @@ module.exports = {
     clearAllTasks,
     uncompleteTask,
     clearCompleted,
-    search
+    search,
+    changePriority
 };

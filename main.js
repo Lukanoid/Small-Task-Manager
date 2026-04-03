@@ -9,7 +9,8 @@ const {
     clearAllTasks,
     uncompleteTask,
     clearCompleted,
-    search
+    search,
+    changePriority
 } = require("./taskManager");
 
 let showHelp = function(){
@@ -26,6 +27,7 @@ let showHelp = function(){
   node main.js uncomplete 1 - for marking task as pending.
   node main.js clear-completed - for clearing completed tasks.
   node main.js search "keyword" - for seaching a task.
+  node main.js priority 1 "priority" - for changing a task priority.
 `);
 }
 
@@ -65,6 +67,9 @@ else if (command === "clear-completed") {
 } 
 else if (command === "search") {
     search(arg1)
+}
+else if (command === "priority") {
+    changePriority(Number(arg1), arg2);
 } 
 else {
     console.log("Unknown command.");

@@ -232,7 +232,7 @@ let showCompletedTasks = function () {
 }
 
 /**
- * Showing all pending tasks(uncompleted)
+ * Showing all pending tasks
  *
  * @returns {void} 
  */
@@ -260,6 +260,44 @@ let showPendingTasks = function () {
     }
 }
 
+/**
+ * Searching for task in all tasks by keyword
+ *
+ * @param {string} keyword the keyword to search for
+ * @returns {void} 
+ */
+let search = function (keyword) {
+
+    try {
+        if (!keyword || keyword.trim() === "") {
+            throw new Error("Please provide a search keyword.")
+        }
+
+        const trimmed = keyword.trim()
+
+        let filtered = tasks.filter(task => task.title.toLowerCase().includes(trimmed.toLowerCase()))
+        if (filtered.length === 0) {
+            console.log("No matching tasks found!")
+        } else {
+            for (let i = 0; i < filtered.length; i++) {
+                if (filtered[i].completed === false) {
+                    let currentDate = getDate(filtered[i])
+                    console.log(`[] ${filtered[i].id} - ${filtered[i].title} | Created: ${currentDate}`)
+                }
+                else {
+                    let currentDate = getDate(filtered[i])
+                    console.log(`[x] ${filtered[i].id} - ${filtered[i].title} | Created: ${currentDate}`)
+                }
+            }
+
+            console.log(`Found ${filtered.length} match for ${trimmed}`)
+        }
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 module.exports = {
     addTask,
     deleteTask,
@@ -270,5 +308,6 @@ module.exports = {
     showPendingTasks,
     clearAllTasks,
     uncompleteTask,
-    clearCompleted
+    clearCompleted,
+    search
 };

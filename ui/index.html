@@ -24,6 +24,17 @@
             <button type="submit">Add Task</button>
         </form>
 
+        <form id="edit-form" class="task-form hidden">
+            <input id="edit-title" type="text" placeholder="Edit task title" required />
+            <select id="edit-priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <button type="submit">Save</button>
+            <button type="button" id="cancel-edit">Cancel</button>
+        </form>
+
         <div class="top-bar">
             <p id="message"></p>
             <button id="clear-all-btn" type="button">Clear All</button>

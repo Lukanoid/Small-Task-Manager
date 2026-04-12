@@ -6,8 +6,14 @@ const message = document.getElementById("message");
 const filterButtons = document.querySelectorAll("[data-filter]");
 const clearAllBtn = document.getElementById("clear-all-btn");
 
+const editForm = document.getElementById("edit-form");
+const editTitleInput = document.getElementById("edit-title");
+const editPriorityInput = document.getElementById("edit-priority");
+const cancelEditBtn = document.getElementById("cancel-edit");
+
 let tasks = [];
 let currentFilter = "all";
+let editingTaskId = null;
 
 function showMessage(text, isError = false) {
     message.textContent = text;
@@ -73,6 +79,20 @@ async function loadTasks() {
     renderTasks();
 }
 
+function openEditForm(task) {
+    editingTaskId = task.id;
+    editTitleInput.value = task.title;
+    editPriorityInput.value = task.priority;
+    editForm.classList.remove("hidden");
+}
+
+function closeEditForm() {
+    editingTaskId = null;
+    editTitleInput.value = "";
+    editPriorityInput.value = "medium";
+    editForm.classList.add("hidden");
+}
+
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -85,6 +105,30 @@ form.addEventListener("submit", async (event) => {
     } catch (error) {
         showMessage(error.message, true);
     }
+});
+
+editForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (editingTaskId === null) return;
+
+    try {
+        const result = await window.taskAPI.edit(
+            editingTaskId,
+            editTitleInput.value,
+            editPriorityInput.value
+        );
+
+        await loadTasks();
+        closeEditForm();
+        showMessage(result.message || "Task updated.");
+    } catch (error) {
+        showMessage(error.message, true);
+    }
+});
+
+cancelEditBtn.addEventListener("click", () => {
+    closeEditForm();
 });
 
 taskList.addEventListener("click", async (event) => {
@@ -105,15 +149,7 @@ taskList.addEventListener("click", async (event) => {
             const task = tasks.find(t => t.id === id);
             if (!task) return;
 
-            const newTitle = prompt("Edit title:", task.title);
-            if (newTitle === null) return;
-
-            const newPriority = prompt("Edit priority (low, medium, high):", task.priority);
-            if (newPriority === null) return;
-
-            const result = await window.taskAPI.edit(id, newTitle, newPriority);
-            await loadTasks();
-            showMessage(result.message || "Task updated.");
+            openEditForm(task);
         }
     } catch (error) {
         showMessage(error.message, true);
@@ -146,6 +182,7 @@ clearAllBtn.addEventListener("click", async () => {
     try {
         await window.taskAPI.clearAll();
         await loadTasks();
+        closeEditForm();
         showMessage("All tasks cleared.");
     } catch (error) {
         showMessage(error.message, true);

@@ -69,7 +69,7 @@ function renderTasks() {
         li.innerHTML = `
             <div class="task-left">
                 <input type="checkbox" ${task.completed ? "checked" : ""} data-id="${task.id}">
-                <span class="${task.completed ? "completed" : ""}">${task.title}</span>
+                <span class="task-title ${task.completed ? "completed" : ""}">${task.title}</span>
                 <select class="priority-select" data-id="${task.id}">
                     <option value="low" ${task.priority === "low" ? "selected" : ""}>Low</option>
                     <option value="medium" ${task.priority === "medium" ? "selected" : ""}>Medium</option>

@@ -173,6 +173,9 @@ let editTask = function (id, newTitle) {
         if (!newTitle || newTitle.trim() === "") {
             throw new Error("Task title is invalid")
         }
+        if(tasks.some(task => task.title.toLowerCase() === newTitle.trim().toLowerCase())){
+            throw new Error("Task title already exist")
+        }
         let oldTitle = tasks[index].title;
         tasks[index].title = newTitle.trim();
         saveTasks(tasks);
@@ -283,11 +286,11 @@ let search = function (keyword) {
             for (let i = 0; i < filtered.length; i++) {
                 if (filtered[i].completed === false) {
                     let currentDate = getDate(filtered[i])
-                    console.log(`[] ${filtered[i].id} - ${filtered[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
+                    console.log(`[] ${filtered[i].id} - ${filtered[i].title}| Priority: ${filtered[i].priority} | Created: ${currentDate}`)
                 }
                 else {
                     let currentDate = getDate(filtered[i])
-                    console.log(`[x] ${filtered[i].id} - ${filtered[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
+                    console.log(`[x] ${filtered[i].id} - ${filtered[i].title}| Priority: ${filtered[i].priority} | Created: ${currentDate}`)
                 }
             }
 

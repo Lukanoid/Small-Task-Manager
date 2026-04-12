@@ -1,13 +1,17 @@
 const { loadTasks, saveTasks } = require("./storage");
 
-let tasks = loadTasks();
-let id = tasks.length > 0
-    ? Math.max(...tasks.map(task => task.id)) + 1
-    : 1;
+let getTasks = function () {
+    return loadTasks();
+};
 
+let getNextId = function (tasks) {
+    return tasks.length > 0
+        ? Math.max(...tasks.map(task => task.id)) + 1
+        : 1;
+};
 
-let getTaskIndexById = function (id) {
-    return tasks.findIndex(task => task.id === id);
+let getTaskIndexById = function (tasks, id) {
+    return tasks.findIndex(task => task.id === Number(id));
 };
 
 let getDate = function (task) {
@@ -15,322 +19,347 @@ let getDate = function (task) {
         return "Unknown";
     }
     return new Date(task.createdAt).toLocaleDateString();
-}
+};
 
 /**
  * Clearing all tasks
  *
- * 
- * @returns {void}
+ * @returns {boolean}
  */
 let clearAllTasks = function () {
-    tasks = [];
-    id = 1;
-    saveTasks(tasks);
-    console.log("All tasks cleared.")
-}
-
+    saveTasks([]);
+    return true;
+};
 
 /**
  * Showing all tasks
  *
- * 
- * @returns {void}
+ * @returns {Array}
  */
 let showTasks = function () {
+    return getTasks();
+};
 
-    if (tasks.length === 0) {
-        console.log("No tasks to show.")
-        return;
-    }
-    for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].completed === false) {
-            const currentDate = getDate(tasks[i]);
-            console.log(`[] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
-        }
-        else {
-            const currentDate = getDate(tasks[i]);
-            console.log(`[x] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
-        }
-    }
-
-}
-
+/**
+ * Alternative Electron-friendly name for showing all tasks
+ *
+ * @returns {Array}
+ */
+let getAllTasks = function () {
+    return getTasks();
+};
 
 /**
  * Deleting existing task
  *
  * @param {number} id the id of task to delete
- * @returns {void}
+ * @returns {object}
  */
 let deleteTask = function (id) {
-    const index = getTaskIndexById(id)
+    let tasks = getTasks();
+    const index = getTaskIndexById(tasks, id);
 
-    try {
-        if (index === -1) {
-            throw new Error("Task not found")
-        }
-        let completedTask = tasks.splice(index, 1)
-        saveTasks(tasks);
-        console.log(`Task: ${completedTask[0].title} successfully removed.`)
-
-    } catch (error) {
-        console.log(error.message)
+    if (index === -1) {
+        throw new Error("Task not found");
     }
-}
 
+    let deletedTask = tasks.splice(index, 1)[0];
+    saveTasks(tasks);
+
+    return {
+        success: true,
+        task: deletedTask,
+        message: `Task: ${deletedTask.title} successfully removed.`
+    };
+};
 
 /**
  * Creating new task
  *
  * @param {string} title the name of task to be created
- * @returns {void} 
+ * @param {string} priority optional priority
+ * @returns {object}
  */
-let addTask = function (title) {
-    try {
-        if (!title || title.trim() === "") {
-            throw new Error("No Title Added")
-        }
-        if (tasks.some(task => task.title.toLowerCase() === title.trim().toLowerCase())) {
-            throw new Error("Task already exists.")
-        }
+let addTask = function (title, priority = "medium") {
+    let tasks = getTasks();
 
-        const currentTask = {
-            id: id++,
-            title: title.trim(),
-            completed: false,
-            createdAt: new Date().toISOString(),
-            priority: "medium"
-        }
-
-        tasks.push(currentTask)
-        saveTasks(tasks)
-        console.log(`Task: ${currentTask.title} successfully added.`)
-    } catch (error) {
-        console.log(error.message)
-
+    if (!title || title.trim() === "") {
+        throw new Error("No Title Added");
     }
-}
+
+    if (tasks.some(task => task.title.toLowerCase() === title.trim().toLowerCase())) {
+        throw new Error("Task already exists.");
+    }
+
+    let normalizedPriority = priority.toLowerCase().trim();
+    if (normalizedPriority !== "high" && normalizedPriority !== "low" && normalizedPriority !== "medium") {
+        throw new Error(`Priority can't be changed to ${normalizedPriority}`);
+    }
+
+    const currentTask = {
+        id: getNextId(tasks),
+        title: title.trim(),
+        completed: false,
+        createdAt: new Date().toISOString(),
+        priority: normalizedPriority
+    };
+
+    tasks.push(currentTask);
+    saveTasks(tasks);
+
+    return {
+        success: true,
+        task: currentTask,
+        message: `Task: ${currentTask.title} successfully added.`
+    };
+};
 
 /**
  * Marking a task as completed.
  *
  * @param {number} id the id of the task to be marked as completed
- * @returns {void}
+ * @returns {object}
  */
 let completeTask = function (id) {
-    const index = getTaskIndexById(id)
-    try {
-        if (index === -1) {
-            throw new Error("Task not found")
-        }
-        tasks[index].completed = true;
-        saveTasks(tasks);
-        console.log(`Task: ${tasks[index].title} successfully completed.`)
-    } catch (error) {
-        console.log(error.message)
+    let tasks = getTasks();
+    const index = getTaskIndexById(tasks, id);
 
+    if (index === -1) {
+        throw new Error("Task not found");
     }
-}
+
+    tasks[index].completed = true;
+    saveTasks(tasks);
+
+    return {
+        success: true,
+        task: tasks[index],
+        message: `Task: ${tasks[index].title} successfully completed.`
+    };
+};
 
 /**
  * Marking a task as pending.
  *
  * @param {number} id the id of the task to be marked as pending
- * @returns {void}
+ * @returns {object}
  */
 let uncompleteTask = function (id) {
-    const index = getTaskIndexById(id)
+    let tasks = getTasks();
+    const index = getTaskIndexById(tasks, id);
 
-    try {
-        if (index === -1) {
-            throw new Error("Task not found")
-        }
-        tasks[index].completed = false;
-        saveTasks(tasks);
-        console.log(`Task: ${tasks[index].title} marked as pending.`)
-    } catch (error) {
-        console.log(error.message)
-
+    if (index === -1) {
+        throw new Error("Task not found");
     }
 
-}
+    tasks[index].completed = false;
+    saveTasks(tasks);
+
+    return {
+        success: true,
+        task: tasks[index],
+        message: `Task: ${tasks[index].title} marked as pending.`
+    };
+};
 
 /**
  * Changing the name of an existing task
  *
  * @param {number} id the id of the task to be changed
  * @param {string} newTitle new name of the task
- * @returns {void} 
+ * @param {string} newPriority optional new priority
+ * @returns {object}
  */
-let editTask = function (id, newTitle) {
-    const index = getTaskIndexById(id)
+let editTask = function (id, newTitle, newPriority) {
+    let tasks = getTasks();
+    const index = getTaskIndexById(tasks, id);
 
-    try {
-        if (index === -1) {
-            throw new Error("Task not found")
-        }
-        if (!newTitle || newTitle.trim() === "") {
-            throw new Error("Task title is invalid")
-        }
-        if(tasks.some(task => task.title.toLowerCase() === newTitle.trim().toLowerCase())){
-            throw new Error("Task title already exist")
-        }
-        let oldTitle = tasks[index].title;
-        tasks[index].title = newTitle.trim();
-        saveTasks(tasks);
-
-        console.log(`Task: ${oldTitle} successfully changed to ${tasks[index].title}.`)
-
-    } catch (error) {
-        console.log(error.message)
+    if (index === -1) {
+        throw new Error("Task not found");
     }
-}
+
+    if (!newTitle || newTitle.trim() === "") {
+        throw new Error("Task title is invalid");
+    }
+
+    if (tasks.some(task =>
+        task.id !== Number(id) &&
+        task.title.toLowerCase() === newTitle.trim().toLowerCase()
+    )) {
+        throw new Error("Task title already exist");
+    }
+
+    let oldTitle = tasks[index].title;
+    tasks[index].title = newTitle.trim();
+
+    if (newPriority !== undefined) {
+        if (!newPriority || newPriority.trim() === "") {
+            throw new Error("Please provide a valid priority.");
+        }
+
+        let priority = newPriority.toLowerCase().trim();
+        if (priority !== "high" && priority !== "low" && priority !== "medium") {
+            throw new Error(`Priority can't be changed to ${priority}`);
+        }
+
+        tasks[index].priority = priority;
+    }
+
+    saveTasks(tasks);
+
+    return {
+        success: true,
+        task: tasks[index],
+        message: `Task: ${oldTitle} successfully changed to ${tasks[index].title}.`
+    };
+};
 
 /**
  * Clearing all completed tasks
  *
- * @returns {void}
+ * @returns {object}
  */
 let clearCompleted = function () {
+    let tasks = getTasks();
     const before = tasks.length;
-    tasks = tasks.filter(task => task.completed === false)
-    saveTasks(tasks);
+    let filteredTasks = tasks.filter(task => task.completed === false);
 
+    saveTasks(filteredTasks);
 
-    if (tasks.length === before) {
-        console.log("No completed tasks to clear.")
+    if (filteredTasks.length === before) {
+        return {
+            success: true,
+            removedCount: 0,
+            message: "No completed tasks to clear."
+        };
+    } else {
+        return {
+            success: true,
+            removedCount: before - filteredTasks.length,
+            message: "Completed tasks cleared"
+        };
     }
-    else {
-        console.log("Completed tasks cleared")
-    }
-}
+};
 
 /**
  * Showing all completed tasks
  *
- * @returns {void}
+ * @returns {Array}
  */
 let showCompletedTasks = function () {
-    let completedTasks = 0;
-    try {
-        if (tasks.length === 0) {
-            throw new Error("No tasks to show.")
-        }
+    let tasks = getTasks();
 
-        for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].completed === true) {
-                completedTasks += 1;
-                const currentDate = getDate(tasks[i])
-                console.log(`[x] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
-            }
-        }
-
-        if (completedTasks === 0) {
-            console.log("No completed tasks to show.")
-        }
-
-    } catch (error) {
-        console.log(error.message)
+    if (tasks.length === 0) {
+        throw new Error("No tasks to show.");
     }
-}
+
+    let completedTasks = tasks.filter(task => task.completed === true);
+    return completedTasks;
+};
 
 /**
  * Showing all pending tasks
  *
- * @returns {void} 
+ * @returns {Array}
  */
 let showPendingTasks = function () {
-    let pendingTasks = 0;
-    try {
-        if (tasks.length === 0) {
-            throw new Error("No tasks to show.")
-        }
+    let tasks = getTasks();
 
-        for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].completed === false) {
-                pendingTasks += 1;
-                const currentDate = getDate(tasks[i])
-                console.log(`[] ${tasks[i].id} - ${tasks[i].title}| Priority: ${tasks[i].priority} | Created: ${currentDate}`)
-            }
-        }
-
-        if (pendingTasks === 0) {
-            console.log("No pending tasks found.")
-        }
-
-    } catch (error) {
-        console.log(error.message)
+    if (tasks.length === 0) {
+        throw new Error("No tasks to show.");
     }
-}
+
+    let pendingTasks = tasks.filter(task => task.completed === false);
+    return pendingTasks;
+};
 
 /**
  * Searching for task in all tasks by keyword
  *
  * @param {string} keyword the keyword to search for
- * @returns {void} 
+ * @returns {object}
  */
 let search = function (keyword) {
+    let tasks = getTasks();
 
-    try {
-        if (!keyword || keyword.trim() === "") {
-            throw new Error("Please provide a search keyword.")
-        }
-
-        const trimmed = keyword.trim()
-
-        let filtered = tasks.filter(task => task.title.toLowerCase().includes(trimmed.toLowerCase()))
-        if (filtered.length === 0) {
-            console.log("No matching tasks found!")
-        } else {
-            for (let i = 0; i < filtered.length; i++) {
-                if (filtered[i].completed === false) {
-                    let currentDate = getDate(filtered[i])
-                    console.log(`[] ${filtered[i].id} - ${filtered[i].title}| Priority: ${filtered[i].priority} | Created: ${currentDate}`)
-                }
-                else {
-                    let currentDate = getDate(filtered[i])
-                    console.log(`[x] ${filtered[i].id} - ${filtered[i].title}| Priority: ${filtered[i].priority} | Created: ${currentDate}`)
-                }
-            }
-
-            console.log(`Found ${filtered.length} match for ${trimmed}`)
-        }
-
-    } catch (error) {
-        console.log(error.message)
+    if (!keyword || keyword.trim() === "") {
+        throw new Error("Please provide a search keyword.");
     }
-}
+
+    const trimmed = keyword.trim();
+
+    let filtered = tasks.filter(task =>
+        task.title.toLowerCase().includes(trimmed.toLowerCase())
+    );
+
+    return {
+        matches: filtered,
+        count: filtered.length,
+        message: filtered.length === 0
+            ? "No matching tasks found!"
+            : `Found ${filtered.length} match for ${trimmed}`
+    };
+};
 
 /**
  * Changing the priority of a certain task
  *
  * @param {number} id the id of the task to change its priority
  * @param {string} word the priority to change to
- * @returns {void} 
+ * @returns {object}
  */
 let changePriority = function (id, word) {
-    const index = getTaskIndexById(id)
+    let tasks = getTasks();
+    const index = getTaskIndexById(tasks, id);
 
-    try {
-        if (index === -1) {
-            throw new Error("Task not found")
-        }
-        if (!word || word.trim() === "") {
-            throw new Error("Please provide a valid priority.")
-        }
-        let priority = word.toLowerCase().trim();
-        if (priority !== "high" && priority !== "low" && priority !== "medium") {
-            throw new Error(`Priority can't be changed to ${priority}`)
-        }
-        let oldPriority = tasks[index].priority;
-        tasks[index].priority = priority;
-        saveTasks(tasks);
-        console.log(`Task: ${tasks[index].title}'s priority successfully changed from ${oldPriority} to ${priority}.`)
-
-    } catch (error) {
-        console.log(error.message)
+    if (index === -1) {
+        throw new Error("Task not found");
     }
+
+    if (!word || word.trim() === "") {
+        throw new Error("Please provide a valid priority.");
+    }
+
+    let priority = word.toLowerCase().trim();
+    if (priority !== "high" && priority !== "low" && priority !== "medium") {
+        throw new Error(`Priority can't be changed to ${priority}`);
+    }
+
+    let oldPriority = tasks[index].priority;
+    tasks[index].priority = priority;
+    saveTasks(tasks);
+
+    return {
+        success: true,
+        task: tasks[index],
+        message: `Task: ${tasks[index].title}'s priority successfully changed from ${oldPriority} to ${priority}.`
+    };
+};
+
+/**
+ * Toggling a task's completed state
+ *
+ * @param {number} id the id of the task to toggle
+ * @returns {object}
+ */
+function toggleTask(id) {
+    let tasks = getTasks();
+    const task = tasks.find(task => task.id === Number(id));
+
+    if (!task) {
+        throw new Error("Task not found.");
+    }
+
+    task.completed = !task.completed;
+    saveTasks(tasks);
+
+    return {
+        success: true,
+        task,
+        message: task.completed
+            ? `Task: ${task.title} successfully completed.`
+            : `Task: ${task.title} marked as pending.`
+    };
 }
 
 module.exports = {
@@ -339,11 +368,14 @@ module.exports = {
     editTask,
     completeTask,
     showTasks,
+    getAllTasks,
     showCompletedTasks,
     showPendingTasks,
     clearAllTasks,
     uncompleteTask,
     clearCompleted,
     search,
-    changePriority
+    changePriority,
+    toggleTask,
+    getDate
 };

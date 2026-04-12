@@ -13,7 +13,11 @@ function loadTasks(){
     if(!data.trim()){
         return [];
     }
-    return JSON.parse(data)
+    try{
+        return JSON.parse(data)
+    } catch(error){
+        throw new Error("tasks.json contains invalid JSON.")
+    }
 }
 
 function saveTasks(tasks){

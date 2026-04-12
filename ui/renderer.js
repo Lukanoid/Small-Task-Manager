@@ -70,7 +70,11 @@ function renderTasks() {
             <div class="task-left">
                 <input type="checkbox" ${task.completed ? "checked" : ""} data-id="${task.id}">
                 <span class="${task.completed ? "completed" : ""}">${task.title}</span>
-                <span class="badge">${task.priority}</span>
+                <select class="priority-select" data-id="${task.id}">
+                    <option value="low" ${task.priority === "low" ? "selected" : ""}>Low</option>
+                    <option value="medium" ${task.priority === "medium" ? "selected" : ""}>Medium</option>
+                    <option value="high" ${task.priority === "high" ? "selected" : ""}>High</option>
+                </select>
                 <span class="date">Created: ${formatDate(task)}</span>
             </div>
             <div class="actions">
@@ -167,19 +171,34 @@ taskList.addEventListener("click", async (event) => {
 
 taskList.addEventListener("change", async (event) => {
     const checkbox = event.target.closest('input[type="checkbox"]');
-    if (!checkbox) return;
+    if (checkbox) {
+        const id = Number(checkbox.dataset.id);
 
-    const id = Number(checkbox.dataset.id);
+        try {
+            const result = await window.taskAPI.toggle(id);
+            await loadTasks();
+            showMessage(result.message || "Task updated.");
+        } catch (error) {
+            showMessage(error.message, true);
+        }
 
-    try {
-        const result = await window.taskAPI.toggle(id);
-        await loadTasks();
-        showMessage(result.message || "Task updated.");
-    } catch (error) {
-        showMessage(error.message, true);
+        return;
+    }
+
+    const prioritySelect = event.target.closest(".priority-select");
+    if (prioritySelect) {
+        const id = Number(prioritySelect.dataset.id);
+        const priority = prioritySelect.value;
+
+        try {
+            const result = await window.taskAPI.changePriority(id, priority);
+            await loadTasks();
+            showMessage(result.message || "Priority updated.");
+        } catch (error) {
+            showMessage(error.message, true);
+        }
     }
 });
-
 filterButtons.forEach(button => {
     button.addEventListener("click", () => {
         currentFilter = button.dataset.filter;

@@ -7,5 +7,7 @@ contextBridge.exposeInMainWorld("taskAPI", {
     toggle: (id) => ipcRenderer.invoke("tasks:toggle", id),
     edit: (id, newTitle, newPriority) =>
         ipcRenderer.invoke("tasks:edit", id, newTitle, newPriority),
-    clearAll: () => ipcRenderer.invoke("tasks:clearAll")
+    clearAll: () => ipcRenderer.invoke("tasks:clearAll"),
+    changePriority: (id, priority) =>
+    ipcRenderer.invoke("tasks:changePriority", id, priority)
 });

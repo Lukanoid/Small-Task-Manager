@@ -41,6 +41,10 @@ app.whenReady().then(() => {
         return taskManager.clearAllTasks();
     });
 
+    ipcMain.handle("tasks:changePriority", async (_, id, priority) => {
+        return taskManager.changePriority(id, priority);
+    });
+
     createWindow();
 });
 

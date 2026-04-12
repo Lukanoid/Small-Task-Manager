@@ -16,7 +16,16 @@ let currentFilter = "all";
 let editingTaskId = null;
 
 function showMessage(text, isError = false) {
-    message.textContent = text;
+    let cleanedText = text;
+
+    if (typeof cleanedText === "string") {
+        cleanedText = cleanedText.replace(
+            /^Error invoking remote method '[^']+': Error:\s*/,
+            ""
+        );
+    }
+
+    message.textContent = cleanedText;
     message.style.color = isError ? "crimson" : "green";
 
     setTimeout(() => {

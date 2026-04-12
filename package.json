@@ -2,9 +2,9 @@
   "name": "small-task-manager",
   "version": "1.0.0",
   "description": "A simple command-line task manager built with JavaScript and Node.js.",
-  "main": "main.js",
+  "main": "electron/main.cjs",
   "scripts": {
-    "start": "node main.js",
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/Lukanoid/Small-Task-Manager/issues"
   },
-  "homepage": "https://github.com/Lukanoid/Small-Task-Manager#readme"
+  "homepage": "https://github.com/Lukanoid/Small-Task-Manager#readme",
+  "devDependencies": {
+    "electron": "^41.2.0"
+  }
 }
